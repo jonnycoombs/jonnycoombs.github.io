@@ -7,8 +7,16 @@
     <link rel="stylesheet" href="stylesOne.css">
 </head>
 <body>
-<div class="game-container">
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+<div class="container">
+    <header>
+        <h1>Me dijiste que te gustaba "Snake", pero ¿puedes ganarme?</h1>
+        <h2>Envíame tu puntuación más alta, buena suerte</h2>
+    </header>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+    </div>
+    <div id="score"></div>
+    <button id="restartButton" style="display: none;">Restart Game</button>
 </div>
 <script src="script.js"></script>
 </body>

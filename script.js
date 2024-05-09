@@ -18,9 +18,14 @@ let food = {
 let dx = 0;
 let dy = 0;
 
+let lastTime = 0;
+const frameDelay = 100; // milliseconds
+let lastDirection;
+let score = 0;
+
 function drawSnake() {
     snake.forEach(segment => {
-        ctx.fillStyle = '#333';
+        ctx.fillStyle = '#fff';
         ctx.fillRect(segment.x * tileSize, segment.y * tileSize, tileSize, tileSize);
     });
 }
@@ -43,20 +48,28 @@ function moveSnake() {
             x: Math.floor(Math.random() * gridSize),
             y: Math.floor(Math.random() * gridSize)
         };
+        score += 10;
     } else {
         snake.pop();
     }
 }
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawSnake();
-    drawFood();
-    moveSnake();
+    const currentTime = Date.now();
+    const deltaTime = currentTime - lastTime;
 
-    if (checkCollision()) {
-        gameOver();
-        return;
+    if (deltaTime >= frameDelay) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawSnake();
+        drawFood();
+        moveSnake();
+
+        if (checkCollision()) {
+            gameOver();
+            return;
+        }
+
+        lastTime = currentTime;
     }
 
     requestAnimationFrame(draw);
@@ -75,24 +88,59 @@ function checkCollision() {
 }
 
 function gameOver() {
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'white';
     ctx.font = '30px Arial';
-    ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
+    ctx.fillText('Lol you lost Mireia :P', canvas.width / 2 - 130, canvas.height / 2);
+
+    ctx.font = '20px Arial';
+    ctx.fillText('Tu puntuación (Are you even trying?): ' + score, canvas.width / 2 - 180, canvas.height / 2 + 30);
+
+    ctx.font = '16px Arial';
+    ctx.fillText('Press Enter to Restart', canvas.width / 2 - 80, canvas.height / 2 + 60);
+
+    document.addEventListener('keydown', restartGame);
+}
+
+function restartGame(e) {
+    if (e.key === 'Enter') {
+        snake = [];
+        snake[0] = {
+            x: gridSize / 2,
+            y: gridSize / 2
+        };
+
+        food = {
+            x: Math.floor(Math.random() * gridSize),
+            y: Math.floor(Math.random() * gridSize)
+        };
+
+        dx = 0;
+        dy = 0;
+        score = 0;
+        lastTime = 0;
+
+        document.removeEventListener('keydown', restartGame);
+        draw();
+    }
 }
 
 document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowUp' && dy === 0) {
+    if (e.key === 'ArrowUp' && dy === 0 && lastDirection !== 'down') {
         dy = -1;
         dx = 0;
-    } else if (e.key === 'ArrowDown' && dy === 0) {
+        lastDirection = 'up';
+    } else if (e.key === 'ArrowDown' && dy === 0 && lastDirection !== 'up') {
         dy = 1;
         dx = 0;
-    } else if (e.key === 'ArrowLeft' && dx === 0) {
+        lastDirection = 'down';
+    } else if (e.key === 'ArrowLeft' && dx === 0 && lastDirection !== 'right') {
         dy = 0;
         dx = -1;
-    } else if (e.key === 'ArrowRight' && dx === 0) {
+        lastDirection = 'left';
+    } else if (e.key === 'ArrowRight' && dx === 0 && lastDirection !== 'left') {
         dy = 0;
         dx = 1;
+        lastDirection = 'right';
     }
 });
 

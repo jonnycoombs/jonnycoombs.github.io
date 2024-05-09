@@ -1,14 +1,29 @@
 body {
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background-color: #333;
+}
+
+.container {
+    margin: 20px;
+    border: 2px solid #333;
+    border-radius: 5px;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
 }
 
 .game-container {
-    background-color: #f0f0f0;
-    border: 2px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #fff;
     border-radius: 5px;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto; /* Center the game container horizontally */
 }
