@@ -1,157 +1,22 @@
-import * as THREE from "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.151.0/three.module.js";
+document.getElementById('container').addEventListener('click', function(event) {
+    const flower = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    flower.classList.add('flower');
+    flower.setAttribute('viewBox', '0 0 100 100');
+    flower.setAttribute('width', '50');
+    flower.setAttribute('height', '50');
+    flower.innerHTML = `
+        <circle cx="50" cy="50" r="10" fill="yellow" />
+        <path d="M50 10 L40 30 L60 30 Z" fill="pink" />
+        <path d="M50 90 L40 70 L60 70 Z" fill="pink" />
+        <path d="M10 50 L30 40 L30 60 Z" fill="pink" />
+        <path d="M90 50 L70 40 L70 60 Z" fill="pink" />
+    `;
+    flower.style.left = `${event.clientX - 25}px`;
+    flower.style.top = `${event.clientY - 25}px`;
+    document.getElementById('container').appendChild(flower);
 
-const canvasEl = document.querySelector("#canvas");
-const toggleEl = document.querySelector(".render-toggle");
-
-let pointer = {
-    x: .65,
-    y: .3,
-    clicked: true
-};
-
-
-// only for codepen preview
-let isStart = true;
-
-
-let isRendering = true;
-
-let renderer, shaderScene, mainScene, sceneTest, renderTargets, camera, clock;
-let basicMaterial, shaderMaterial;
-
-const backgroundColor = new THREE.Color(0xffffff);
-
-initScene();
-
-updateSize();
-window.addEventListener("resize", updateSize);
-
-function handleClickOrTouch(e) {
-    e.preventDefault(); // Prevent default touch behavior
-
-    if (e.target !== toggleEl) {
-        let clientX, clientY;
-
-        if (e.type === "click") {
-            clientX = e.clientX;
-            clientY = e.clientY;
-        } else if (e.type === "touchstart") {
-            const touch = e.touches[0];
-            clientX = touch.clientX;
-            clientY = touch.clientY;
-        }
-
-        pointer.x = clientX / window.innerWidth;
-        pointer.y = clientY / window.innerHeight;
-        pointer.clicked = true;
-        isRendering = true;
-    } else {
-        isRendering = !isRendering;
-    }
-
-    toggleEl.innerHTML = isRendering ? "freeze" : "unfreeze";
-}
-
-window.addEventListener("click", handleClickOrTouch);
-window.addEventListener("touchstart", handleClickOrTouch);
-
-render();
-
-
-function initScene() {
-    renderer = new THREE.WebGLRenderer({
-        canvas: canvasEl,
-        alpha: true
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    shaderScene = new THREE.Scene();
-    mainScene = new THREE.Scene();
-    sceneTest = new THREE.Scene();
-
-    camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    clock = new THREE.Clock();
-
-    renderTargets = [
-        new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight),
-        new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight),
-    ];
-
-    const planeGeometry = new THREE.PlaneGeometry(2, 2);
-
-    shaderMaterial = new THREE.ShaderMaterial({
-        uniforms: {
-            u_ratio: {type: "f", value: window.innerWidth / window.innerHeight},
-            u_point: {type: "v2", value: new THREE.Vector2(pointer.x, pointer.y)},
-            u_time: {type: "f", value: 0.},
-            u_stop_time: {type: "f", value: 0.},
-            u_stop_randomizer: {type: "v3", value: new THREE.Vector2(0, 0, 0)},
-            u_texture: {type: "t", value: null},
-            u_background_color: {type: "v3", value: backgroundColor}
-        },
-        vertexShader: document.getElementById("vertexShader").textContent,
-        fragmentShader: document.getElementById("fragmentShader").textContent,
-        transparent: true
-    });
-
-    basicMaterial = new THREE.MeshBasicMaterial({
-        transparent: true
-    });
-    const backgroundColorMaterial = new THREE.MeshBasicMaterial({
-        color: backgroundColor,
-        transparent: true
-    });
-
-    const planeBasic = new THREE.Mesh(planeGeometry, basicMaterial);
-    const planeShader = new THREE.Mesh(planeGeometry, shaderMaterial);
-    const coloredPlane = new THREE.Mesh(planeGeometry, backgroundColorMaterial);
-    shaderScene.add(planeShader);
-    mainScene.add(coloredPlane);
-
-    renderer.setRenderTarget(renderTargets[0]);
-    renderer.render(mainScene, camera);
-
-    mainScene.remove(coloredPlane);
-    mainScene.add(planeBasic);
-}
-
-
-function render() {
-    requestAnimationFrame(render);
-    const delta = clock.getDelta();
-
-    if (isRendering) {
-
-        shaderMaterial.uniforms.u_texture.value = renderTargets[0].texture;
-        shaderMaterial.uniforms.u_time.value = clock.getElapsedTime() + .9; // offset for 1st flower color
-
-        if (pointer.clicked) {
-            shaderMaterial.uniforms.u_point.value = new THREE.Vector2(pointer.x, 1 - pointer.y);
-            shaderMaterial.uniforms.u_stop_randomizer.value = new THREE.Vector3(Math.random(), Math.random(), Math.random());
-            if (isStart) {
-                shaderMaterial.uniforms.u_stop_randomizer.value = new THREE.Vector3(.5, 1, 1);
-                isStart = false;
-            }
-            shaderMaterial.uniforms.u_stop_time.value = 0.;
-            pointer.clicked = false;
-        }
-        shaderMaterial.uniforms.u_stop_time.value += delta;
-
-        renderer.setRenderTarget(renderTargets[1]);
-        renderer.render(shaderScene, camera);
-
-        basicMaterial.map = renderTargets[1].texture;
-
-        renderer.setRenderTarget(null);
-        renderer.render(mainScene, camera);
-
-        let tmp = renderTargets[0];
-        renderTargets[0] = renderTargets[1];
-        renderTargets[1] = tmp;
-    }
-}
-
-function updateSize() {
-    shaderMaterial.uniforms.u_ratio.value = window.innerWidth / window.innerHeight;
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
+    // Remove the flower after the animation is done
+    setTimeout(() => {
+        flower.remove();
+    }, 2000);
+});
