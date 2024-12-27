@@ -26,7 +26,7 @@ const screenHeight = window.innerHeight;
 const moveBoundary = 150; // Max distance the "No" button can move from "Yes" button
 
 // Initial position of the "No" button (start next to "Yes" button)
-noBtn.style.left = `${yesBtnArea.left - 300}px`; // Place next to the "Yes" button
+noBtn.style.left = `${yesBtnArea.left - 1350}px`; // Place next to the "Yes" button
 
 document.addEventListener("mousemove", (e) => {
     const mouseX = e.clientX;
@@ -38,7 +38,7 @@ document.addEventListener("mousemove", (e) => {
     // Calculate distance between mouse cursor and "No" button
     const distX = Math.abs(mouseX - (noBtnArea.left + noBtnArea.width / 2));
     const distY = Math.abs(mouseY - (noBtnArea.top + noBtnArea.height / 2));
-    const threshold = 150; // Increase distance threshold to make the button move more freely
+    const threshold = 50; // Increase distance threshold to make the button move more freely
 
     if (distX < threshold && distY < threshold) {
         // Calculate new position within the restricted boundary around the "Yes" button
