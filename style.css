@@ -13,18 +13,22 @@ body {
 
 .container {
     position: relative;
+    display: inline-block;
 }
 
 h1 {
     margin-bottom: 30px;
 }
 
+/* Ensuring both buttons are side by side */
 .buttons {
     display: flex;
     justify-content: center;
     gap: 20px;
+    position: relative;
 }
 
+/* Button Styling */
 button {
     padding: 15px 30px;
     font-size: 16px;
@@ -38,14 +42,10 @@ button:hover {
     background-color: #ddd;
 }
 
-/* "No" Button Moving Away */
+/* "No" Button Styling */
 #noBtn {
-    position: relative;
+    position: absolute;
     transition: transform 0.2s ease-out;
-}
-
-#yesBtn {
-    z-index: 10;
 }
 
 /* Image container */
@@ -54,21 +54,31 @@ button:hover {
     display: none;
 }
 
-/* Fireworks animation (you can replace this with a flower animation) */
+/* Fireworks animation (will stay) */
 .celebration {
     display: none;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 100%;
+    width: 150%;
     height: 100%;
     background-image: url('fireworks.gif'); /* Replace with your own gif */
     background-size: cover;
-    animation: fireworks 3s forwards;
+    animation: fireworks 10s forwards;
 }
 
 @keyframes fireworks {
     0% { opacity: 0; }
     100% { opacity: 1; }
+}
+
+/* Fading out the celebration image */
+.fadeOut {
+    animation: fadeOut 10s forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
 }
