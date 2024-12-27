@@ -1,30 +1,54 @@
-function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+// Images links for "No" button (replace with your own links)
+const randomImages = [
+    "image1.jpg", // Replace with your links
+    "image2.jpg",
+    "image3.jpg",
+    "image4.png",
+    "image5.jpg"
+];
+
+// Celebration Image for "Yes" (replace with your link)
+const celebrationImage = "celebration.gif"; // Replace with your link
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const randomImageContainer = document.getElementById("randomImage");
+const celebration = document.getElementById("celebration");
+
+let isTouchDevice = 'ontouchstart' in document.documentElement;
+
+// Move the "No" button away when the mouse gets close
+noBtn.addEventListener("mouseenter", () => {
+    noBtn.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`;
+});
+
+// Handle "No" button click or touch
+noBtn.addEventListener("click", () => {
+    if (isTouchDevice) {
+        // Show random image on touch
+        let randomIndex = Math.floor(Math.random() * randomImages.length);
+        let img = document.createElement("img");
+        img.src = randomImages[randomIndex];
+        img.style.maxWidth = "100%";
+        img.style.borderRadius = "10px";
+        randomImageContainer.innerHTML = "";
+        randomImageContainer.appendChild(img);
+        randomImageContainer.style.display = "block";
     }
-    return color;
-}
+});
 
-document.getElementById('container').addEventListener('click', function(event) {
-    const flower = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    flower.classList.add('flower');
-    flower.setAttribute('viewBox', '0 0 100 100');
-    flower.setAttribute('width', '150');
-    flower.setAttribute('height', '150');
+// Handle "Yes" button click
+yesBtn.addEventListener("click", () => {
+    // Display fireworks animation
+    celebration.style.display = "block";
+    randomImageContainer.style.display = "none"; // Hide random image if it was displayed
 
-    const petalColor = getRandomColor();
-    const centerColor = getRandomColor();
-
-    flower.innerHTML = `
-        <circle cx="50" cy="50" r="10" fill="${centerColor}" />
-        <path d="M50 10 L40 30 L60 30 Z" fill="${petalColor}" />
-        <path d="M50 90 L40 70 L60 70 Z" fill="${petalColor}" />
-        <path d="M10 50 L30 40 L30 60 Z" fill="${petalColor}" />
-        <path d="M90 50 L70 40 L70 60 Z" fill="${petalColor}" />
-    `;
-    flower.style.left = `${event.clientX - 50}px`;
-    flower.style.top = `${event.clientY - 50}px`;
-    document.getElementById('container').appendChild(flower);
+    // Show celebratory image
+    let img = document.createElement("img");
+    img.src = celebrationImage;
+    img.style.maxWidth = "100%";
+    img.style.borderRadius = "10px";
+    randomImageContainer.innerHTML = "";
+    randomImageContainer.appendChild(img);
+    randomImageContainer.style.display = "block";
 });
