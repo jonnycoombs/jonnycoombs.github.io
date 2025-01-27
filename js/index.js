@@ -188,9 +188,9 @@ loadImg(['img/bug.png', 'img/new.png', 'img/ni.png', 'img/tuofa.png','img/fz.png
                     count = 0
                     timer3 = null
                     // 显示分享层
-                    setTimeout(() => {
-                      share.style.display = "block"
-                    }, 5000)
+                    // setTimeout(() => {
+                    //   share.style.display = "block"
+                    // }, 5000)
                   } else {
                     count++
                     // --------------------
