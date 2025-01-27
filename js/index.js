@@ -113,8 +113,14 @@ loadImg(['img/bug.png', 'img/new.png', 'img/ni.png', 'img/tuofa.png','img/fz.png
       points1 = getImgInfo(imgArr[0], 4),
       points2 = [],
       textFires = []
-    for (let i = 1; i < imgArr.length; i++) {
-      points2.push(getImgInfo(imgArr[i], 2))
+    if (imgArr.length > 1) {
+      for (let i = 1; i < imgArr.length; i++) {
+        const imgInfo = getImgInfo(imgArr[i], 2);
+        console.log("getImgInfo output:", imgInfo);  // Debugging log
+        points2.push(imgInfo);
+      }
+    } else {
+      console.error("imgArr does not have enough elements to populate points2.");
     }
     timer2 = setInterval(() => {
       if (count == ballAll) {
