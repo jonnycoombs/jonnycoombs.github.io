@@ -93,7 +93,7 @@ img {
 }
 .index .fence .p3 {
   position: absolute;
-  right: -50px;
+  right: -5px;
   bottom: -70px;
   z-index: 10;
   width: 280px;
