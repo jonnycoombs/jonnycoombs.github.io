@@ -225,6 +225,7 @@ loadImg(['img/bug.png', 'img/new.png', 'img/ni.png', 'img/tuofa.png','img/fz.png
                               )
                             }
                             // 加祝福语
+                            if (points2[this.index] && Array.isArray(points2[this.index])) {
                             for (let i = 0; i < points2[this.index].length; i++) {
                               let power = 0.05,
                                 vx = (points2[this.index][i].x - points2[this.index].w / 2) * power,
@@ -240,6 +241,9 @@ loadImg(['img/bug.png', 'img/new.png', 'img/ni.png', 'img/tuofa.png','img/fz.png
                                   r: 1
                                 })
                               )
+                            }
+                            } else {
+                              console.error('points2[this.index] is undefined or not an array:', points2[this.index]);
                             }
                           }
                         }
