@@ -43,6 +43,13 @@ img {
   background-size: cover;
   margin: 0 auto;
 }
+.index .newyear {
+  width: 600px;
+  height: 160px;
+  background: url("../img/NewYear.png");
+  background-size: cover;
+  margin: 0 auto;
+}
 .index .fence {
   width: 100vw;
   height: 160px;
